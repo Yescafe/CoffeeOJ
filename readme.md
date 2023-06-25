@@ -3,3 +3,9 @@
 - judger: <https://github.com/Yescafe/Coffee-judger>
 - server: forked from <https://github.com/Gourouting/singo>
 
+## Deploy (dev)
+
+```bash
+./deploy/deploy-dev.sh
+```
+
