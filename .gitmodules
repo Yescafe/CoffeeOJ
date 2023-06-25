@@ -1,0 +1,3 @@
+[submodule "judger"]
+	path = judger
+	url = https://github.com/lab530/CoffeeOJ-judger
