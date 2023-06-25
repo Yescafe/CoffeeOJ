@@ -35,6 +35,8 @@ const (
 	CodeParamErr = 40001
 	// CodeFileSystemError 文件系统错误
 	CodeFileSystemError = 30001
+	// CodeJudgerError 判题机错误
+	CodeJudgerError = 60000
 )
 
 // CheckLogin 检查登录

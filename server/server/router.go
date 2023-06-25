@@ -35,6 +35,7 @@ func NewRouter() *gin.Engine {
 			// User Routing
 			auth.GET("user/me", api.UserMe)
 			auth.DELETE("user/logout", api.UserLogout)
+			auth.POST("problem/submit", api.ProblemSubmit)
 		}
 
 		// 需要登录保护同时需要管理员
@@ -42,8 +43,13 @@ func NewRouter() *gin.Engine {
 		adminAuth.Use(middleware.AuthRequired())
 		adminAuth.Use(middleware.AdminRequired())
 		{
+			// 添加题目
 			adminAuth.POST("problem/add", api.ProblemAdd)
+			// 删除题目
+			adminAuth.POST("problem/delete", api.ProblemDelete)
 		}
+
+		v1.GET("problem/fetch", api.ProblemFetch)
 	}
 	return r
 }

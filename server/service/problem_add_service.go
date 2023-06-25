@@ -20,14 +20,14 @@ type ProblemAddService struct {
 func (service *ProblemAddService) valid() *serializer.Response {
 	if service.MemoLimit < 16 { // < 16MB
 		return &serializer.Response{
-			Code: 40001,
+			Code: serializer.CodeParamErr,
 			Msg:  "内存设置过小，至少为 16 MB",
 		}
 	}
 
 	if service.TimeLimit < 500 { // < 500ms
 		return &serializer.Response{
-			Code: 40001,
+			Code: serializer.CodeParamErr,
 			Msg:  "时间设置过小，至少为 500ms",
 		}
 	}
@@ -52,10 +52,10 @@ func (service *ProblemAddService) Add() serializer.Response {
 		return serializer.ParamErr("添加题目失败", err)
 	}
 
-	os.Mkdir("problems", os.ModePerm)
-	path := fmt.Sprintf("problems/P%v", problem.ID)
+	path := fmt.Sprintf("%v/problems/P%v", os.Getenv("DATA_HOME"), problem.ID)
 	problem.Path = path
-	if err := os.Mkdir(path, os.ModePerm); err != nil {
+	if err := os.MkdirAll(path, os.ModePerm); err != nil {
+		model.DB.Delete(&problem)
 		return serializer.Err(
 			serializer.CodeFileSystemError,
 			fmt.Sprintf("%s 创建失败", path),
@@ -65,6 +65,7 @@ func (service *ProblemAddService) Add() serializer.Response {
 	textPath := path + "/text.md"
 	fo, err := os.Create(textPath)
 	if err != nil {
+		model.DB.Delete(&problem)
 		return serializer.Err(
 			serializer.CodeFileSystemError,
 			fmt.Sprintf("%s 打开失败", textPath),
@@ -73,6 +74,7 @@ func (service *ProblemAddService) Add() serializer.Response {
 	}
 	defer fo.Close()
 	if _, err := fo.Write([]byte(service.Text)); err != nil {
+		model.DB.Delete(&problem)
 		return serializer.Err(
 			serializer.CodeFileSystemError,
 			fmt.Sprintf("%s 写入失败", textPath),
@@ -81,6 +83,7 @@ func (service *ProblemAddService) Add() serializer.Response {
 	}
 
 	if err := model.DB.Save(&problem).Error; err != nil {
+		model.DB.Delete(&problem)
 		return serializer.ParamErr("添加题目失败", err)
 	}
 
