@@ -22,11 +22,9 @@ func NewRouter() *gin.Engine {
 	{
 		v1.POST("ping", api.Ping)
 
-		// 用户登录
 		v1.POST("user/register", api.UserRegister)
-
-		// 用户登录
 		v1.POST("user/login", api.UserLogin)
+		v1.GET("user/fetch", api.UserFetch)
 
 		// 需要登录保护的
 		auth := v1.Group("")
@@ -50,6 +48,10 @@ func NewRouter() *gin.Engine {
 		}
 
 		v1.GET("problem/fetch", api.ProblemFetch)
+		v1.GET("problem/list", api.ProblemList)
+
+		v1.GET("submission/fetch", api.SubmissionFetch)
+		v1.POST("submission/rejudge", api.SubmissionRejudge)
 	}
 	return r
 }

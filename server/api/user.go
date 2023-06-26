@@ -47,3 +47,13 @@ func UserLogout(c *gin.Context) {
 		Msg:  "登出成功",
 	})
 }
+
+func UserFetch(c *gin.Context) {
+	var service service.UserFetchService
+	if err := c.ShouldBind(&service); err == nil {
+		res := service.Fetch()
+		c.JSON(200, res)
+	} else {
+		c.JSON(200, ErrorResponse(err))
+	}
+}

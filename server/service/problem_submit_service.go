@@ -1,14 +1,8 @@
 package service
 
 import (
-	"bufio"
-	"bytes"
-	"fmt"
-	"io"
-	"net/http"
-	"os"
+	"singo/model"
 	"singo/serializer"
-	"strings"
 )
 
 type ProblemSubmitService struct {
@@ -17,50 +11,29 @@ type ProblemSubmitService struct {
 	Lang       string `form:"lang" json:"lang"`
 }
 
+type JudgerRespType struct {
+	Status model.SubmissionStatus `json:"status"`
+	Info   string                 `json:"info"`
+}
+
 func (service *ProblemSubmitService) Submit() serializer.Response {
-	sourceCode := strings.ReplaceAll(service.SourceCode, "\n", "\\n")
+	submission := model.Submission{
+		ProblemID:  service.ProblemId,
+		UserID:     0,
+		SourcePath: service.SourceCode, // TODO save source code to file
+		Lang:       service.Lang,
+	}
+	if err := SubmissionJudge(&submission); err != nil {
+		return *err
+	}
 
-	reqJson := fmt.Sprintf(`{
-	"source": "%v",
-	"lang": "%v",
-	"problem_id": "%v"
-}`, sourceCode, service.Lang, service.ProblemId)
-	fmt.Println(reqJson)
-	reqBody := []byte(reqJson)
-
-	resp, err := http.Post(
-		os.Getenv("JUDGER_ADDR")+"/api/v1/submit",
-		"application/json",
-		bytes.NewBuffer(reqBody),
-	)
-	if err != nil {
+	if err := model.DB.Create(&submission).Error; err != nil {
 		return serializer.Err(
-			serializer.CodeJudgerError,
-			"请求判题机错误",
+			serializer.CodeDBError,
+			"录入提交记录失败",
 			err,
 		)
 	}
-	defer resp.Body.Close()
 
-	rd := bufio.NewReader(resp.Body)
-	buf := make([]byte, 1024)
-	var judgerInfo string
-	for {
-		n, err := rd.Read(buf)
-		if err != nil && err != io.EOF {
-			return serializer.Err(
-				serializer.CodeFileSystemError,
-				"读取判题机返回 resp body 错误",
-				err,
-			)
-		}
-		if n == 0 {
-			break
-		}
-		judgerInfo += string(buf[:n])
-	}
-
-	return serializer.Response{
-		Data: judgerInfo,
-	}
+	return serializer.BuildSubmissionResponse(submission)
 }
