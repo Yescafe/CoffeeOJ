@@ -1,12 +1,10 @@
 package service
 
 import (
-	"bufio"
 	"fmt"
-	"io"
-	"os"
 	"singo/model"
 	"singo/serializer"
+	"singo/util"
 )
 
 type ProblemFetchService struct {
@@ -41,33 +39,13 @@ func (service *ProblemFetchService) Fetch() serializer.Response {
 	var problem model.Problem
 	model.DB.Model(&model.Problem{}).Where("id = ?", service.ID).First(&problem)
 	path := problem.Path + "/text.md"
-	fi, err := os.Open(path)
+	text, err := util.ReadFromFile(path)
 	if err != nil {
 		return serializer.Err(
 			serializer.CodeFileSystemError,
-			fmt.Sprintf("无法打开 %s", path),
+			fmt.Sprintf("文件 %v 读取失败", path),
 			err,
 		)
-	}
-	defer fi.Close()
-
-	rd := bufio.NewReader(fi)
-	buf := make([]byte, 1024)
-	var text string
-
-	for {
-		n, err := rd.Read(buf)
-		if err != nil && err != io.EOF {
-			return serializer.Err(
-				serializer.CodeFileSystemError,
-				"读取失败",
-				err,
-			)
-		}
-		if n == 0 {
-			break
-		}
-		text += string(buf[:n])
 	}
 
 	return serializer.Response{
@@ -75,7 +53,7 @@ func (service *ProblemFetchService) Fetch() serializer.Response {
 			Title:     problem.Title,
 			MemoLimit: problem.MemoLimit,
 			TimeLimit: problem.TimeLimit,
-			Text:      text,
+			Text:      *text,
 		},
 	}
 }

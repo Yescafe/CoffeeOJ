@@ -54,3 +54,13 @@ func ProblemList(c *gin.Context) {
 		c.JSON(200, ErrorResponse(err))
 	}
 }
+
+func ProblemUpdate(c *gin.Context) {
+	var service service.ProblemUpdateService
+	if err := c.ShouldBind(&service); err == nil {
+		res := service.Update()
+		c.JSON(200, res)
+	} else {
+		c.JSON(200, ErrorResponse(err))
+	}
+}

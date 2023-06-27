@@ -49,6 +49,7 @@ func NewRouter() *gin.Engine {
 
 		v1.GET("problem/fetch", api.ProblemFetch)
 		v1.GET("problem/list", api.ProblemList)
+		v1.POST("problem/update", api.ProblemUpdate)
 
 		v1.GET("submission/fetch", api.SubmissionFetch)
 		v1.POST("submission/rejudge", api.SubmissionRejudge)

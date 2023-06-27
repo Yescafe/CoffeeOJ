@@ -5,6 +5,7 @@ import (
 	"os"
 	"singo/model"
 	"singo/serializer"
+	"singo/util"
 )
 
 type ProblemAddService struct {
@@ -63,21 +64,10 @@ func (service *ProblemAddService) Add() serializer.Response {
 		)
 	}
 	textPath := path + "/text.md"
-	fo, err := os.Create(textPath)
-	if err != nil {
-		model.DB.Delete(&problem)
+	if err := util.WriteToFile(textPath, service.Text); err != nil {
 		return serializer.Err(
 			serializer.CodeFileSystemError,
-			fmt.Sprintf("%s 打开失败", textPath),
-			err,
-		)
-	}
-	defer fo.Close()
-	if _, err := fo.Write([]byte(service.Text)); err != nil {
-		model.DB.Delete(&problem)
-		return serializer.Err(
-			serializer.CodeFileSystemError,
-			fmt.Sprintf("%s 写入失败", textPath),
+			fmt.Sprintf("文件 %v 写入失败", textPath),
 			err,
 		)
 	}
