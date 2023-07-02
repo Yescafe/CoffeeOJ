@@ -1,6 +1,6 @@
 # Coffee Online Judge
 
-- judger: <https://github.com/Yescafe/Coffee-judger>
+- judger: <https://github.com/Yescafe/CoffeeOJ-judger>
 - server: forked from <https://github.com/Gourouting/singo>
 
 ## Deploy (dev)
