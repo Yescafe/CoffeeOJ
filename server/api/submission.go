@@ -6,9 +6,9 @@ import (
 )
 
 func SubmissionFetch(c *gin.Context) {
-	var service service.SubmissionFetchService
-	if err := c.ShouldBind(&service); err == nil {
-		res := service.Fetch()
+	var serv service.SubmissionFetchService
+	if err := c.ShouldBind(&serv); err == nil {
+		res := serv.Fetch()
 		c.JSON(200, res)
 	} else {
 		c.JSON(200, ErrorResponse(err))
@@ -16,9 +16,9 @@ func SubmissionFetch(c *gin.Context) {
 }
 
 func SubmissionRejudge(c *gin.Context) {
-	var service service.SubmissionRejudgeService
-	if err := c.ShouldBind(&service); err == nil {
-		res := service.Rejudge()
+	var serv service.SubmissionRejudgeService
+	if err := c.ShouldBind(&serv); err == nil {
+		res := serv.Rejudge()
 		c.JSON(200, res)
 	} else {
 		c.JSON(200, ErrorResponse(err))

@@ -9,8 +9,7 @@ import (
 )
 
 type ProblemAddService struct {
-	CreatorID uint   `form:"creator_id" json:"creator_id"`
-	Title     string `form:"title" json:"title" binding:"required"`
+	Title string `form:"title" json:"title" binding:"required"`
 	// $MemoLimit MB
 	MemoLimit int64 `form:"memo_limit" json:"memo_limit" binding:"required"`
 	// $TimeLimit ms
@@ -36,13 +35,13 @@ func (service *ProblemAddService) valid() *serializer.Response {
 	return nil
 }
 
-func (service *ProblemAddService) Add() serializer.Response {
+func (service *ProblemAddService) Add(creatorID uint) serializer.Response {
 	if err := service.valid(); err != nil {
 		return *err
 	}
 
 	problem := model.Problem{
-		CreatorID: service.CreatorID,
+		CreatorID: creatorID,
 		Title:     service.Title,
 		MemoLimit: service.MemoLimit,
 		TimeLimit: service.TimeLimit,

@@ -49,7 +49,7 @@ func (service *UserRegisterService) Register() serializer.Response {
 		Nickname: service.Nickname,
 		UserName: service.UserName,
 		Status:   model.Active,
-		Role:     model.UserRoleNone,
+		Role:     model.UserRoleAdmin, // TODO default is admin for testings
 	}
 
 	// 表单验证

@@ -1,14 +1,17 @@
 package server
 
 import (
+	"github.com/gin-gonic/gin"
 	"os"
 	"singo/api"
 	"singo/middleware"
-
-	"github.com/gin-gonic/gin"
 )
 
-// NewRouter 路由配置
+// @title			Swagger Example API
+// @version			1.0
+// @license.name	GPL-3.0
+// @host			localhost:3000
+// @BasePath		/api/v1
 func NewRouter() *gin.Engine {
 	r := gin.Default()
 
