@@ -17,7 +17,7 @@ import (
 //	@Param		user_name			query	string	true	"username"
 //	@Param		password			query	string	true	"password"
 //	@Param		password_confirm	query	string	true	"confirmation password"
-//	@Router		/user/register																[post]
+//	@Router		/user/register																				[post]
 func UserRegister(c *gin.Context) {
 	var serv service.UserRegisterService
 	if err := c.ShouldBind(&serv); err == nil {
