@@ -1,0 +1,247 @@
+basePath: /api/v1
+host: localhost:3000
+info:
+  contact:
+    email: qyc027@gmail.com
+    name: Ivan Chien
+  license:
+    name: GPL-3.0 License
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+  title: CoffeeOJ RUSTful APIs
+  version: "1.0"
+paths:
+  /ping:
+    post:
+      produces:
+      - application/json
+      responses: {}
+      summary: ping
+  /problem/add:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: problem title
+        in: query
+        name: title
+        required: true
+        type: string
+      - description: problem memory limitation
+        in: query
+        name: memo_limit
+        required: true
+        type: integer
+      - description: problem time limitation
+        in: query
+        name: time_limit
+        required: true
+        type: integer
+      - description: problem text
+        in: query
+        name: text
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: add a new problem
+  /problem/delete:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: problem memory limitation
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: delete a problem
+  /problem/fetch:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: problem id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: fetch an existed problem
+  /problem/list:
+    get:
+      produces:
+      - application/json
+      responses: {}
+      summary: list problems
+  /problem/submit:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: problem id
+        in: query
+        name: problem_id
+        required: true
+        type: integer
+      - description: submission source code
+        in: query
+        name: source_code
+        required: true
+        type: string
+      - description: submission language
+        enum:
+        - c
+        - cpp
+        - rust
+        - python
+        in: query
+        name: lang
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: submit code
+  /problem/update:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: problem id
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: problem title
+        in: query
+        name: title
+        required: true
+        type: string
+      - description: problem memory limitation
+        in: query
+        name: memo_limit
+        required: true
+        type: integer
+      - description: problem time limitation
+        in: query
+        name: time_limit
+        required: true
+        type: integer
+      - description: problem text
+        in: query
+        name: text
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: update a problem
+  /submission/fetch:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: submission id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: submit code
+  /submission/rejudge:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: submission id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: rejudge submission
+  /user/fetch:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: user ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: fetch user info
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: username
+        in: query
+        name: user_name
+        required: true
+        type: string
+      - description: password
+        in: query
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: login
+  /user/logout:
+    delete:
+      produces:
+      - application/json
+      responses: {}
+      summary: current user logout
+  /user/me:
+    get:
+      produces:
+      - application/json
+      responses: {}
+      summary: fetch user info
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: nickname
+        in: query
+        name: nickname
+        required: true
+        type: string
+      - description: username
+        in: query
+        name: user_name
+        required: true
+        type: string
+      - description: password
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: confirmation password
+        in: query
+        name: password_confirm
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: login
+swagger: "2.0"

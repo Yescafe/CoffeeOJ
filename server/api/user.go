@@ -8,7 +8,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// UserRegister 用户注册接口
+// UserRegister godoc
+//
+//	@Summary	login
+//	@Accept		json
+//	@Produce	json
+//	@Param		nickname			query	string	true	"nickname"
+//	@Param		user_name			query	string	true	"username"
+//	@Param		password			query	string	true	"password"
+//	@Param		password_confirm	query	string	true	"confirmation password"
+//	@Router		/user/register																[post]
 func UserRegister(c *gin.Context) {
 	var serv service.UserRegisterService
 	if err := c.ShouldBind(&serv); err == nil {
@@ -19,7 +28,14 @@ func UserRegister(c *gin.Context) {
 	}
 }
 
-// UserLogin 用户登录接口
+// UserLogin godoc
+//
+//	@Summary	login
+//	@Accept		json
+//	@Produce	json
+//	@Param		user_name	query	string	true	"username"
+//	@Param		password	query	string	true	"password"
+//	@Router		/user/login	[post]
 func UserLogin(c *gin.Context) {
 	var serv service.UserLoginService
 	if err := c.ShouldBind(&serv); err == nil {
@@ -30,14 +46,22 @@ func UserLogin(c *gin.Context) {
 	}
 }
 
-// UserMe 用户详情
+// UserMe godoc
+//
+//	@Summary	fetch user info
+//	@Produce	json
+//	@Router		/user/me	[get]
 func UserMe(c *gin.Context) {
 	user := CurrentUser(c)
 	res := serializer.BuildUserResponse(*user)
 	c.JSON(200, res)
 }
 
-// UserLogout 用户登出
+// UserLogout godoc
+//
+//	@Summary	current user logout
+//	@Produce	json
+//	@Router		/user/logout	[delete]
 func UserLogout(c *gin.Context) {
 	s := sessions.Default(c)
 	s.Clear()
@@ -48,6 +72,13 @@ func UserLogout(c *gin.Context) {
 	})
 }
 
+// UserFetch godoc
+//
+//	@Summary	fetch user info
+//	@Accept		json
+//	@Produce	json
+//	@Param		id			query	int	true	"user ID"
+//	@Router		/user/fetch	[get]
 func UserFetch(c *gin.Context) {
 	var serv service.UserFetchService
 	if err := c.ShouldBind(&serv); err == nil {

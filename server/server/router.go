@@ -2,16 +2,13 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"os"
 	"singo/api"
 	"singo/middleware"
 )
 
-// @title			Swagger Example API
-// @version			1.0
-// @license.name	GPL-3.0
-// @host			localhost:3000
-// @BasePath		/api/v1
 func NewRouter() *gin.Engine {
 	r := gin.Default()
 
@@ -57,5 +54,6 @@ func NewRouter() *gin.Engine {
 		v1.GET("submission/fetch", api.SubmissionFetch)
 		v1.POST("submission/rejudge", api.SubmissionRejudge)
 	}
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }
