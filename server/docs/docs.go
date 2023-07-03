@@ -32,7 +32,16 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/problem/add": {
+        "/problems": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "list problems",
+                "responses": {}
+            }
+        },
+        "/problems/add": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -74,7 +83,7 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/problem/delete": {
+        "/problems/delete": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -95,37 +104,7 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/problem/fetch": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "fetch an existed problem",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "problem id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {}
-            }
-        },
-        "/problem/list": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "list problems",
-                "responses": {}
-            }
-        },
-        "/problem/submit": {
+        "/problems/submit": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -166,7 +145,7 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/problem/update": {
+        "/problems/update": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -215,28 +194,28 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/submission/fetch": {
-            "post": {
+        "/problems/{id}": {
+            "get": {
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "submit code",
+                "summary": "fetch an existed problem",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "submission id",
+                        "description": "problem id",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
                 "responses": {}
             }
         },
-        "/submission/rejudge": {
+        "/submissions/rejudge": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -257,28 +236,28 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/user/fetch": {
-            "get": {
+        "/submissions/{id}": {
+            "post": {
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "fetch user info",
+                "summary": "submit code",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "user ID",
+                        "description": "submission id",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
                 "responses": {}
             }
         },
-        "/user/login": {
+        "/users/login": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -306,7 +285,7 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/user/logout": {
+        "/users/logout": {
             "delete": {
                 "produces": [
                     "application/json"
@@ -315,7 +294,7 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/user/me": {
+        "/users/me": {
             "get": {
                 "produces": [
                     "application/json"
@@ -324,7 +303,7 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/user/register": {
+        "/users/register": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -360,6 +339,27 @@ const docTemplate = `{
                         "description": "confirmation password",
                         "name": "password_confirm",
                         "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "fetch user info",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "user ID",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],

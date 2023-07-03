@@ -22,37 +22,43 @@ func NewRouter() *gin.Engine {
 	{
 		v1.POST("ping", api.Ping)
 
-		v1.POST("user/register", api.UserRegister)
-		v1.POST("user/login", api.UserLogin)
-		v1.GET("user/fetch", api.UserFetch)
-
-		// 需要登录保护的
-		auth := v1.Group("")
-		auth.Use(middleware.AuthRequired())
+		users := v1.Group("/users")
 		{
-			// User Routing
-			auth.GET("user/me", api.UserMe)
-			auth.DELETE("user/logout", api.UserLogout)
-			auth.POST("problem/submit", api.ProblemSubmit)
+			users.GET(":id", api.UserFetch)
+			//users.GET("", api.UserList)
+			users.POST("login", api.UserLogin)
+			users.POST("register", api.UserRegister)
+			auth := users.Group("")
+			auth.Use(middleware.AuthRequired())
+			{
+				auth.GET("me", api.UserMe)
+				auth.DELETE("logout", api.UserLogout)
+			}
 		}
 
-		// 需要登录保护同时需要管理员
-		adminAuth := v1.Group("")
-		adminAuth.Use(middleware.AuthRequired())
-		adminAuth.Use(middleware.AdminRequired())
+		problems := v1.Group("/problems")
 		{
-			// 添加题目
-			adminAuth.POST("problem/add", api.ProblemAdd)
-			// 删除题目
-			adminAuth.POST("problem/delete", api.ProblemDelete)
+			problems.GET(":id", api.ProblemFetch)
+			problems.GET("", api.ProblemList)
+			auth := problems.Group("")
+			auth.Use(middleware.AuthRequired())
+			{
+				auth.POST("submit", api.ProblemSubmit)
+				admin := auth.Group("")
+				admin.Use(middleware.AdminRequired())
+				{
+					admin.POST("add", api.ProblemAdd)
+					admin.POST("delete", api.ProblemDelete)
+					admin.POST("update", api.ProblemUpdate)
+				}
+			}
 		}
 
-		v1.GET("problem/fetch", api.ProblemFetch)
-		v1.GET("problem/list", api.ProblemList)
-		v1.POST("problem/update", api.ProblemUpdate)
-
-		v1.GET("submission/fetch", api.SubmissionFetch)
-		v1.POST("submission/rejudge", api.SubmissionRejudge)
+		submissions := v1.Group("/submissions")
+		{
+			submissions.GET(":id", api.SubmissionFetch)
+			submissions.POST("rejudge", api.SubmissionRejudge)
+		}
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r

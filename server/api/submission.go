@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"singo/service"
+	"strconv"
 )
 
 // SubmissionFetch godoc
@@ -10,16 +11,19 @@ import (
 //	@Summary	submit code
 //	@Accept		json
 //	@Produce	json
-//	@Param		id					query	int	true	"submission id"
-//	@Router		/submission/fetch	[post]
+//	@Param		id					path	int	true	"submission id"
+//	@Router		/submissions/{id}	[post]
 func SubmissionFetch(c *gin.Context) {
-	var serv service.SubmissionFetchService
-	if err := c.ShouldBind(&serv); err == nil {
-		res := serv.Fetch()
-		c.JSON(200, res)
-	} else {
-		c.JSON(200, ErrorResponse(err))
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, ErrorResponse(err))
+		return
 	}
+	serv := service.SubmissionFetchService{
+		ID: uint(id),
+	}
+	res := serv.Fetch()
+	c.JSON(200, res)
 }
 
 // SubmissionRejudge godoc
@@ -27,8 +31,8 @@ func SubmissionFetch(c *gin.Context) {
 //	@Summary	rejudge submission
 //	@Accept		json
 //	@Produce	json
-//	@Param		id					query	int	true	"submission id"
-//	@Router		/submission/rejudge	[post]
+//	@Param		id						query	int	true	"submission id"
+//	@Router		/submissions/rejudge	[post]
 func SubmissionRejudge(c *gin.Context) {
 	var serv service.SubmissionRejudgeService
 	if err := c.ShouldBind(&serv); err == nil {

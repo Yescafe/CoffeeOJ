@@ -16,7 +16,27 @@ paths:
       - application/json
       responses: {}
       summary: ping
-  /problem/add:
+  /problems:
+    get:
+      produces:
+      - application/json
+      responses: {}
+      summary: list problems
+  /problems/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: problem id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: fetch an existed problem
+  /problems/add:
     post:
       consumes:
       - application/json
@@ -45,7 +65,7 @@ paths:
       - application/json
       responses: {}
       summary: add a new problem
-  /problem/delete:
+  /problems/delete:
     post:
       consumes:
       - application/json
@@ -59,27 +79,7 @@ paths:
       - application/json
       responses: {}
       summary: delete a problem
-  /problem/fetch:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: problem id
-        in: query
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses: {}
-      summary: fetch an existed problem
-  /problem/list:
-    get:
-      produces:
-      - application/json
-      responses: {}
-      summary: list problems
-  /problem/submit:
+  /problems/submit:
     post:
       consumes:
       - application/json
@@ -108,7 +108,7 @@ paths:
       - application/json
       responses: {}
       summary: submit code
-  /problem/update:
+  /problems/update:
     post:
       consumes:
       - application/json
@@ -142,13 +142,13 @@ paths:
       - application/json
       responses: {}
       summary: update a problem
-  /submission/fetch:
+  /submissions/{id}:
     post:
       consumes:
       - application/json
       parameters:
       - description: submission id
-        in: query
+        in: path
         name: id
         required: true
         type: integer
@@ -156,7 +156,7 @@ paths:
       - application/json
       responses: {}
       summary: submit code
-  /submission/rejudge:
+  /submissions/rejudge:
     post:
       consumes:
       - application/json
@@ -170,13 +170,13 @@ paths:
       - application/json
       responses: {}
       summary: rejudge submission
-  /user/fetch:
+  /users/{id}:
     get:
       consumes:
       - application/json
       parameters:
       - description: user ID
-        in: query
+        in: path
         name: id
         required: true
         type: integer
@@ -184,7 +184,7 @@ paths:
       - application/json
       responses: {}
       summary: fetch user info
-  /user/login:
+  /users/login:
     post:
       consumes:
       - application/json
@@ -203,19 +203,19 @@ paths:
       - application/json
       responses: {}
       summary: login
-  /user/logout:
+  /users/logout:
     delete:
       produces:
       - application/json
       responses: {}
       summary: current user logout
-  /user/me:
+  /users/me:
     get:
       produces:
       - application/json
       responses: {}
       summary: fetch user info
-  /user/register:
+  /users/register:
     post:
       consumes:
       - application/json

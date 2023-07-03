@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"singo/service"
+	"strconv"
 )
 
 // ProblemAdd godoc
@@ -14,7 +15,7 @@ import (
 //	@Param		memo_limit		query	int		true	"problem memory limitation"
 //	@Param		time_limit		query	int		true	"problem time limitation"
 //	@Param		text			query	string	true	"problem text"
-//	@Router		/problem/add	[post]
+//	@Router		/problems/add	[post]
 func ProblemAdd(c *gin.Context) {
 	var serv service.ProblemAddService
 	if err := c.ShouldBind(&serv); err == nil {
@@ -31,8 +32,8 @@ func ProblemAdd(c *gin.Context) {
 //	@Summary	delete a problem
 //	@Accept		json
 //	@Produce	json
-//	@Param		id				query	int	true	"problem memory limitation"
-//	@Router		/problem/delete	[post]
+//	@Param		id					query	int	true	"problem memory limitation"
+//	@Router		/problems/delete	[post]
 func ProblemDelete(c *gin.Context) {
 	var serv service.ProblemDeleteService
 	if err := c.ShouldBind(&serv); err == nil {
@@ -48,16 +49,19 @@ func ProblemDelete(c *gin.Context) {
 //	@Summary	fetch an existed problem
 //	@Accept		json
 //	@Produce	json
-//	@Param		id				query	int	true	"problem id"
-//	@Router		/problem/fetch	[get]
+//	@Param		id				path	int	true	"problem id"
+//	@Router		/problems/{id}	[get]
 func ProblemFetch(c *gin.Context) {
-	var serv service.ProblemFetchService
-	if err := c.ShouldBind(&serv); err == nil {
-		res := serv.Fetch()
-		c.JSON(200, res)
-	} else {
-		c.JSON(200, ErrorResponse(err))
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, ErrorResponse(err))
+		return
 	}
+	serv := service.ProblemFetchService{
+		ID: uint(id),
+	}
+	res := serv.Fetch()
+	c.JSON(200, res)
 }
 
 // ProblemSubmit godoc
@@ -65,10 +69,10 @@ func ProblemFetch(c *gin.Context) {
 //	@Summary	submit code
 //	@Accept		json
 //	@Produce	json
-//	@Param		problem_id		query	int		true	"problem id"
-//	@Param		source_code		query	string	true	"submission source code"
-//	@Param		lang			query	string	true	"submission language"	Enums(c, cpp, rust, python)
-//	@Router		/problem/submit	[post]
+//	@Param		problem_id			query	int		true	"problem id"
+//	@Param		source_code			query	string	true	"submission source code"
+//	@Param		lang				query	string	true	"submission language"	Enums(c, cpp, rust, python)
+//	@Router		/problems/submit	[post]
 func ProblemSubmit(c *gin.Context) {
 	var serv service.ProblemSubmitService
 	if err := c.ShouldBind(&serv); err == nil {
@@ -83,7 +87,7 @@ func ProblemSubmit(c *gin.Context) {
 //
 //	@Summary	list problems
 //	@Produce	json
-//	@Router		/problem/list	[get]
+//	@Router		/problems	[get]
 func ProblemList(c *gin.Context) {
 	var serv service.ProblemListService
 	if err := c.ShouldBind(&serv); err == nil {
@@ -99,12 +103,12 @@ func ProblemList(c *gin.Context) {
 //	@Summary	update a problem
 //	@Accept		json
 //	@Produce	json
-//	@Param		id				query	int		true	"problem id"
-//	@Param		title			query	string	true	"problem title"
-//	@Param		memo_limit		query	int		true	"problem memory limitation"
-//	@Param		time_limit		query	int		true	"problem time limitation"
-//	@Param		text			query	string	true	"problem text"
-//	@Router		/problem/update	[post]
+//	@Param		id					query	int		true	"problem id"
+//	@Param		title				query	string	true	"problem title"
+//	@Param		memo_limit			query	int		true	"problem memory limitation"
+//	@Param		time_limit			query	int		true	"problem time limitation"
+//	@Param		text				query	string	true	"problem text"
+//	@Router		/problems/update	[post]
 func ProblemUpdate(c *gin.Context) {
 	var serv service.ProblemUpdateService
 	if err := c.ShouldBind(&serv); err == nil {

@@ -3,6 +3,7 @@ package api
 import (
 	"singo/serializer"
 	"singo/service"
+	"strconv"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -17,7 +18,7 @@ import (
 //	@Param		user_name			query	string	true	"username"
 //	@Param		password			query	string	true	"password"
 //	@Param		password_confirm	query	string	true	"confirmation password"
-//	@Router		/user/register																				[post]
+//	@Router		/users/register																												[post]
 func UserRegister(c *gin.Context) {
 	var serv service.UserRegisterService
 	if err := c.ShouldBind(&serv); err == nil {
@@ -33,9 +34,9 @@ func UserRegister(c *gin.Context) {
 //	@Summary	login
 //	@Accept		json
 //	@Produce	json
-//	@Param		user_name	query	string	true	"username"
-//	@Param		password	query	string	true	"password"
-//	@Router		/user/login	[post]
+//	@Param		user_name		query	string	true	"username"
+//	@Param		password		query	string	true	"password"
+//	@Router		/users/login	[post]
 func UserLogin(c *gin.Context) {
 	var serv service.UserLoginService
 	if err := c.ShouldBind(&serv); err == nil {
@@ -50,7 +51,7 @@ func UserLogin(c *gin.Context) {
 //
 //	@Summary	fetch user info
 //	@Produce	json
-//	@Router		/user/me	[get]
+//	@Router		/users/me	[get]
 func UserMe(c *gin.Context) {
 	user := CurrentUser(c)
 	res := serializer.BuildUserResponse(*user)
@@ -61,7 +62,7 @@ func UserMe(c *gin.Context) {
 //
 //	@Summary	current user logout
 //	@Produce	json
-//	@Router		/user/logout	[delete]
+//	@Router		/users/logout	[delete]
 func UserLogout(c *gin.Context) {
 	s := sessions.Default(c)
 	s.Clear()
@@ -77,14 +78,17 @@ func UserLogout(c *gin.Context) {
 //	@Summary	fetch user info
 //	@Accept		json
 //	@Produce	json
-//	@Param		id			query	int	true	"user ID"
-//	@Router		/user/fetch	[get]
+//	@Param		id			path	int	true	"user ID"
+//	@Router		/users/{id}	[get]
 func UserFetch(c *gin.Context) {
-	var serv service.UserFetchService
-	if err := c.ShouldBind(&serv); err == nil {
-		res := serv.Fetch()
-		c.JSON(200, res)
-	} else {
-		c.JSON(200, ErrorResponse(err))
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, ErrorResponse(err))
+		return
 	}
+	serv := service.UserFetchService{
+		ID: uint(id),
+	}
+	res := serv.Fetch()
+	c.JSON(200, res)
 }
