@@ -16,12 +16,16 @@ paths:
       - application/json
       responses: {}
       summary: ping
+      tags:
+      - testing
   /problems:
     get:
       produces:
       - application/json
       responses: {}
       summary: list problems
+      tags:
+      - problems
   /problems/{id}:
     get:
       consumes:
@@ -36,6 +40,8 @@ paths:
       - application/json
       responses: {}
       summary: fetch an existed problem
+      tags:
+      - problems
   /problems/add:
     post:
       consumes:
@@ -64,7 +70,11 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - SetCookie: []
       summary: add a new problem
+      tags:
+      - problems
   /problems/delete:
     post:
       consumes:
@@ -78,7 +88,11 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - SetCookie: []
       summary: delete a problem
+      tags:
+      - problems
   /problems/submit:
     post:
       consumes:
@@ -107,7 +121,12 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - SetCookie: []
       summary: submit code
+      tags:
+      - problems
+      - submissions
   /problems/update:
     post:
       consumes:
@@ -141,7 +160,11 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - SetCookie: []
       summary: update a problem
+      tags:
+      - problems
   /submissions/{id}:
     post:
       consumes:
@@ -156,6 +179,8 @@ paths:
       - application/json
       responses: {}
       summary: submit code
+      tags:
+      - submissions
   /submissions/rejudge:
     post:
       consumes:
@@ -169,7 +194,11 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - SetCookie: []
       summary: rejudge submission
+      tags:
+      - submissions
   /users/{id}:
     get:
       consumes:
@@ -184,6 +213,8 @@ paths:
       - application/json
       responses: {}
       summary: fetch user info
+      tags:
+      - users
   /users/login:
     post:
       consumes:
@@ -203,18 +234,30 @@ paths:
       - application/json
       responses: {}
       summary: login
+      tags:
+      - users
   /users/logout:
     delete:
       produces:
       - application/json
       responses: {}
+      security:
+      - SetCookie: []
       summary: current user logout
+      tags:
+      - users
   /users/me:
     get:
+      consumes:
+      - application/json
       produces:
       - application/json
       responses: {}
+      security:
+      - SetCookie: []
       summary: fetch user info
+      tags:
+      - users
   /users/register:
     post:
       consumes:
@@ -244,4 +287,12 @@ paths:
       - application/json
       responses: {}
       summary: login
+      tags:
+      - users
+securityDefinitions:
+  SetCookie:
+    description: cookie
+    in: header
+    name: Cookie
+    type: apiKey
 swagger: "2.0"

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"singo/model"
 	"singo/serializer"
 
@@ -26,6 +27,11 @@ func CurrentUser() gin.HandlerFunc {
 // AuthRequired 需要登录
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		cookie, err := c.Cookie("gin-session")
+		if err != nil {
+			cookie = "<no gin-session>"
+		}
+		fmt.Printf("Cookie gin-session = %v\n", cookie)
 		if user, _ := c.Get("user"); user != nil {
 			if _, ok := user.(*model.User); ok {
 				c.Next()

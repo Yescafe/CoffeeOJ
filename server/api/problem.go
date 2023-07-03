@@ -9,6 +9,7 @@ import (
 // ProblemAdd godoc
 //
 //	@Summary	add a new problem
+//	@Tags		problems
 //	@Accept		json
 //	@Produce	json
 //	@Param		title			query	string	true	"problem title"
@@ -16,6 +17,7 @@ import (
 //	@Param		time_limit		query	int		true	"problem time limitation"
 //	@Param		text			query	string	true	"problem text"
 //	@Router		/problems/add	[post]
+//	@Security	SetCookie
 func ProblemAdd(c *gin.Context) {
 	var serv service.ProblemAddService
 	if err := c.ShouldBind(&serv); err == nil {
@@ -30,10 +32,12 @@ func ProblemAdd(c *gin.Context) {
 // ProblemDelete godoc
 //
 //	@Summary	delete a problem
+//	@Tags		problems
 //	@Accept		json
 //	@Produce	json
 //	@Param		id					query	int	true	"problem memory limitation"
 //	@Router		/problems/delete	[post]
+//	@Security	SetCookie
 func ProblemDelete(c *gin.Context) {
 	var serv service.ProblemDeleteService
 	if err := c.ShouldBind(&serv); err == nil {
@@ -47,6 +51,7 @@ func ProblemDelete(c *gin.Context) {
 // ProblemFetch godoc
 //
 //	@Summary	fetch an existed problem
+//	@Tags		problems
 //	@Accept		json
 //	@Produce	json
 //	@Param		id				path	int	true	"problem id"
@@ -67,12 +72,14 @@ func ProblemFetch(c *gin.Context) {
 // ProblemSubmit godoc
 //
 //	@Summary	submit code
+//	@Tags		problems, submissions
 //	@Accept		json
 //	@Produce	json
 //	@Param		problem_id			query	int		true	"problem id"
 //	@Param		source_code			query	string	true	"submission source code"
 //	@Param		lang				query	string	true	"submission language"	Enums(c, cpp, rust, python)
 //	@Router		/problems/submit	[post]
+//	@Security	SetCookie
 func ProblemSubmit(c *gin.Context) {
 	var serv service.ProblemSubmitService
 	if err := c.ShouldBind(&serv); err == nil {
@@ -86,6 +93,7 @@ func ProblemSubmit(c *gin.Context) {
 // ProblemList godoc
 //
 //	@Summary	list problems
+//	@Tags		problems
 //	@Produce	json
 //	@Router		/problems	[get]
 func ProblemList(c *gin.Context) {
@@ -101,6 +109,7 @@ func ProblemList(c *gin.Context) {
 // ProblemUpdate godoc
 //
 //	@Summary	update a problem
+//	@Tags		problems
 //	@Accept		json
 //	@Produce	json
 //	@Param		id					query	int		true	"problem id"
@@ -109,6 +118,7 @@ func ProblemList(c *gin.Context) {
 //	@Param		time_limit			query	int		true	"problem time limitation"
 //	@Param		text				query	string	true	"problem text"
 //	@Router		/problems/update	[post]
+//	@Security	SetCookie
 func ProblemUpdate(c *gin.Context) {
 	var serv service.ProblemUpdateService
 	if err := c.ShouldBind(&serv); err == nil {

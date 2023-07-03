@@ -28,6 +28,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "testing"
+                ],
                 "summary": "ping",
                 "responses": {}
             }
@@ -37,17 +40,28 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "problems"
+                ],
                 "summary": "list problems",
                 "responses": {}
             }
         },
         "/problems/add": {
             "post": {
+                "security": [
+                    {
+                        "SetCookie": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "problems"
                 ],
                 "summary": "add a new problem",
                 "parameters": [
@@ -85,11 +99,19 @@ const docTemplate = `{
         },
         "/problems/delete": {
             "post": {
+                "security": [
+                    {
+                        "SetCookie": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "problems"
                 ],
                 "summary": "delete a problem",
                 "parameters": [
@@ -106,11 +128,20 @@ const docTemplate = `{
         },
         "/problems/submit": {
             "post": {
+                "security": [
+                    {
+                        "SetCookie": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "problems",
+                    "submissions"
                 ],
                 "summary": "submit code",
                 "parameters": [
@@ -147,11 +178,19 @@ const docTemplate = `{
         },
         "/problems/update": {
             "post": {
+                "security": [
+                    {
+                        "SetCookie": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "problems"
                 ],
                 "summary": "update a problem",
                 "parameters": [
@@ -202,6 +241,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "problems"
+                ],
                 "summary": "fetch an existed problem",
                 "parameters": [
                     {
@@ -217,11 +259,19 @@ const docTemplate = `{
         },
         "/submissions/rejudge": {
             "post": {
+                "security": [
+                    {
+                        "SetCookie": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "submissions"
                 ],
                 "summary": "rejudge submission",
                 "parameters": [
@@ -244,6 +294,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "submissions"
+                ],
                 "summary": "submit code",
                 "parameters": [
                     {
@@ -264,6 +317,9 @@ const docTemplate = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "users"
                 ],
                 "summary": "login",
                 "parameters": [
@@ -287,8 +343,16 @@ const docTemplate = `{
         },
         "/users/logout": {
             "delete": {
+                "security": [
+                    {
+                        "SetCookie": []
+                    }
+                ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "users"
                 ],
                 "summary": "current user logout",
                 "responses": {}
@@ -296,8 +360,19 @@ const docTemplate = `{
         },
         "/users/me": {
             "get": {
+                "security": [
+                    {
+                        "SetCookie": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "users"
                 ],
                 "summary": "fetch user info",
                 "responses": {}
@@ -310,6 +385,9 @@ const docTemplate = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "users"
                 ],
                 "summary": "login",
                 "parameters": [
@@ -353,6 +431,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "users"
+                ],
                 "summary": "fetch user info",
                 "parameters": [
                     {
@@ -365,6 +446,14 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
+        }
+    },
+    "securityDefinitions": {
+        "SetCookie": {
+            "description": "cookie",
+            "type": "apiKey",
+            "name": "Cookie",
+            "in": "header"
         }
     }
 }`

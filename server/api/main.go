@@ -14,6 +14,7 @@ import (
 // Ping godoc
 //
 //	@Summary	ping
+//	@Tags		testing
 //	@Produce	json
 //	@Router		/ping	[post]
 func Ping(c *gin.Context) {

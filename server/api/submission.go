@@ -9,6 +9,7 @@ import (
 // SubmissionFetch godoc
 //
 //	@Summary	submit code
+//	@Tags		submissions
 //	@Accept		json
 //	@Produce	json
 //	@Param		id					path	int	true	"submission id"
@@ -29,10 +30,12 @@ func SubmissionFetch(c *gin.Context) {
 // SubmissionRejudge godoc
 //
 //	@Summary	rejudge submission
+//	@Tags		submissions
 //	@Accept		json
 //	@Produce	json
 //	@Param		id						query	int	true	"submission id"
 //	@Router		/submissions/rejudge	[post]
+//	@Security	SetCookie
 func SubmissionRejudge(c *gin.Context) {
 	var serv service.SubmissionRejudgeService
 	if err := c.ShouldBind(&serv); err == nil {
